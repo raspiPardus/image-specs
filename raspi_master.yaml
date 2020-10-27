@@ -69,7 +69,7 @@ steps:
     - ssh
     - parted
     - dosfstools
-    - wireless-tools
+    - iw
     - wpasupplicant
     - raspi3-firmware
     - __LINUX_IMAGE__
