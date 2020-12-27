@@ -38,7 +38,7 @@ Do note that –at least currently– vmdb2 uses some syntax that is available
 only in the version in testing (Bullseye).
 
 If debootstrap still fails with exec format error, try
-running `dpkg-reconfigure qemi-user-static`. This calls
+running `dpkg-reconfigure qemu-user-static`. This calls
 `/var/lib/dpkg/info/qemu-user-static.postinst` which uses binfmt-support
 to register the executable format with /usr/bin/qemu-$fmt-static
 
