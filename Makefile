@@ -57,8 +57,8 @@ raspi_armel_bullseye.yaml: raspi_master.yaml
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" |\
 	sed "s/__RELEASE__/bullseye/" |\
 	grep -v "__OTHER_APT_ENABLE__" |\
-	grep -v 'deb.debian.org/debian-security' | \
-	sed "s/__HOST__/rpi_armel/" > $@
+	sed -e '/debian-security/ s/deb/# Uncomment after Bullseye becomes stable → deb/' |\
+	sed "s/__HOST__/rpi-armel/" > $@
 
 raspi_armhf_bullseye.yaml: raspi_master.yaml
 	cat raspi_master.yaml | sed "s/__ARCH__/armhf/" | \
@@ -67,7 +67,8 @@ raspi_armhf_bullseye.yaml: raspi_master.yaml
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" |\
 	sed "s/__OTHER_APT_ENABLE__//" |\
 	sed "s/__RELEASE__/bullseye/" |\
-	sed "s/__HOST__/rpi_armhf/" > $@
+	sed -e '/debian-security/ s/deb/# Uncomment after Bullseye becomes stable → deb/' |\
+	sed "s/__HOST__/rpi-armhf/" > $@
 
 raspi_arm64_bullseye.yaml: raspi_master.yaml
 	cat raspi_master.yaml | sed "s/__ARCH__/arm64/" | \
@@ -76,8 +77,8 @@ raspi_arm64_bullseye.yaml: raspi_master.yaml
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
 	sed "s/__OTHER_APT_ENABLE__//" |\
 	sed "s/__RELEASE__/bullseye/" |\
-	grep -v 'deb.debian.org/debian-security' | \
-	sed "s/__HOST__/rpi_arm64/" > $@
+	sed -e '/debian-security/ s/deb/# Uncomment after Bullseye becomes stable → deb/' |\
+	sed "s/__HOST__/rpi-arm64/" > $@
 
 %.sha256: %.img.xz
 	echo $@
