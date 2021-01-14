@@ -38,7 +38,7 @@ steps:
 
   - unpack-rootfs: /
 
-  - qemu-debootstrap: buster
+  - qemu-debootstrap: __RELEASE__
     mirror: http://deb.debian.org/debian
     target: /
     arch: __ARCH__
@@ -51,11 +51,11 @@ steps:
   - create-file: /etc/apt/sources.list
     trailing-newline: '1'
     contents: |
-      deb http://deb.debian.org/debian buster main contrib non-free
-      deb http://deb.debian.org/debian-security buster/updates main contrib non-free
+      deb http://deb.debian.org/debian __RELEASE__ main contrib non-free
+      deb http://deb.debian.org/debian-security __RELEASE__/updates main contrib non-free
       # Backports are _not_ enabled by default.
       # Enable them by uncommenting the following line:
-      # deb http://deb.debian.org/debian buster-backports main contrib non-free
+      # deb http://deb.debian.org/debian __RELEASE__-backports main contrib non-free
       __OTHER_APT_ENABLE__
     unless: rootfs_unpacked
 

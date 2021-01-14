@@ -2,7 +2,8 @@ all: shasums
 
 # List all the supported and built Pi platforms here. They get expanded
 # to names like 'raspi_2.yaml' and 'raspi_0w.img.xz'.
-BUILD_PLATFORMS := 0w 2 3 4
+BUILD_PLATFORMS := 0w_buster 2_buster 3_buster 4_buster \
+		   armel_bullseye armhf_bullseye arm64_bullseye
 
 platforms := $(addprefix raspi_,$(BUILD_PLATFORMS))
 shasums: $(addsuffix .sha256,$(platforms)) $(addsuffix .xz.sha256,$(platforms))
@@ -10,31 +11,34 @@ xzimages: $(addsuffix .img.xz,$(platforms))
 images: $(addsuffix .img,$(platforms))
 yaml: $(addsuffix .yaml,$(platforms))
 
-raspi_0w.yaml: raspi_master.yaml
+raspi_0w_buster.yaml: raspi_master.yaml
 	cat raspi_master.yaml | sed "s/__ARCH__/armel/" | \
 	sed "s/__LINUX_IMAGE__/linux-image-rpi/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" |\
+	sed "s/__RELEASE__/buster/" |\
 	grep -v "__OTHER_APT_ENABLE__" |\
 	sed "s/__HOST__/rpi0/" > $@
 
-raspi_2.yaml: raspi_master.yaml
+raspi_2_buster.yaml: raspi_master.yaml
 	cat raspi_master.yaml | sed "s/__ARCH__/armhf/" | \
 	sed "s/__LINUX_IMAGE__/linux-image-armmp/" | \
 	grep -v "__EXTRA_PKGS__" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" |\
 	sed "s/__OTHER_APT_ENABLE__//" |\
+	sed "s/__RELEASE__/buster/" |\
 	sed "s/__HOST__/rpi2/" > $@
 
-raspi_3.yaml: raspi_master.yaml
+raspi_3_buster.yaml: raspi_master.yaml
 	cat raspi_master.yaml | sed "s/__ARCH__/arm64/" | \
 	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
 	sed "s/__OTHER_APT_ENABLE__//" |\
+	sed "s/__RELEASE__/buster/" |\
 	sed "s/__HOST__/rpi3/" > $@
 
-raspi_4.yaml: raspi_master.yaml
+raspi_4_buster.yaml: raspi_master.yaml
 	cat raspi_master.yaml | sed "s/__ARCH__/arm64/" | \
 	sed "s#raspi3-firmware#raspi-firmware/buster-backports#" | \
 	sed "s#apt-get update#echo 'APT::Default-Release \"buster\";' > /etc/apt/apt.conf\n      apt-get update#" | \
@@ -42,8 +46,38 @@ raspi_4.yaml: raspi_master.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-arm64\/buster-backports/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211\/buster-backports/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
+	sed "s/__RELEASE__/buster/" |\
 	sed "s/__OTHER_APT_ENABLE__/deb http:\/\/deb.debian.org\/debian\/ buster-backports main contrib non-free # raspi 4 needs a kernel and raspi-firmware newer than buster's/" |\
 	sed "s/__HOST__/rpi4/" > $@
+
+raspi_armel_bullseye.yaml: raspi_master.yaml
+	cat raspi_master.yaml | sed "s/__ARCH__/armel/" | \
+	sed "s/__LINUX_IMAGE__/linux-image-rpi/" | \
+	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
+	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" |\
+	sed "s/__RELEASE__/bullseye/" |\
+	grep -v "__OTHER_APT_ENABLE__" |\
+	grep -v 'deb.debian.org/debian-security' | \
+	sed "s/__HOST__/rpi_armel/" > $@
+
+raspi_armhf_bullseye.yaml: raspi_master.yaml
+	cat raspi_master.yaml | sed "s/__ARCH__/armhf/" | \
+	sed "s/__LINUX_IMAGE__/linux-image-armmp/" | \
+	grep -v "__EXTRA_PKGS__" | \
+	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" |\
+	sed "s/__OTHER_APT_ENABLE__//" |\
+	sed "s/__RELEASE__/bullseye/" |\
+	sed "s/__HOST__/rpi_armhf/" > $@
+
+raspi_arm64_bullseye.yaml: raspi_master.yaml
+	cat raspi_master.yaml | sed "s/__ARCH__/arm64/" | \
+	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
+	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
+	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
+	sed "s/__OTHER_APT_ENABLE__//" |\
+	sed "s/__RELEASE__/bullseye/" |\
+	grep -v 'deb.debian.org/debian-security' | \
+	sed "s/__HOST__/rpi_arm64/" > $@
 
 %.sha256: %.img.xz
 	echo $@
