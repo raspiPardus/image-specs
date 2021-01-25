@@ -71,7 +71,7 @@ steps:
     - dosfstools
     - wireless-tools
     - wpasupplicant
-    - raspi3-firmware
+    - __FIRMWARE_PKG__
     - __LINUX_IMAGE__
     __EXTRA_PKGS__
     tag: /
