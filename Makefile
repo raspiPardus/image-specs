@@ -12,9 +12,12 @@ xzimages: $(addsuffix .img.xz,$(platforms))
 images: $(addsuffix .img,$(platforms))
 yaml: $(addsuffix .yaml,$(platforms))
 
+target_platforms:
+	@echo $(platforms)
+
 raspi_base_buster.yaml: raspi_master.yaml
 	cat raspi_master.yaml | \
-	sed "s/__FIRMWARE_PKG__/raspi3-firmware" | \
+	sed "s/__FIRMWARE_PKG__/raspi3-firmware/" | \
 	sed "s/__RELEASE__/buster/" > $@
 
 raspi_1_buster.yaml: raspi_base_buster.yaml
