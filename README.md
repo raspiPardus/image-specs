@@ -47,40 +47,52 @@ configuration file) for all of the generated images, diverting as
 little as possible in a parametrized way. The master recipe is
 [raspi_master.yaml](raspi_master.yaml).
 
-A Makefile is supplied to drive the build of the recipes into images —
-`raspi_0w` (for the Raspberry Pi 0, 0w and 1, models A and B),
-`raspi_2` (for the Raspberry Pi 2, models A and B), `raspi_3`
-(for all models of the Raspberry Pi 3), and `raspi_4` (for all
-models of the Raspberry Pi 4). Some portions of building the image
-will require root privileges, the you'll need to execute *make*
-below as root. That being said, if you want to build the
-default image for a Raspberry Pi 3B+, you can just issue:
+A Makefile is supplied to drive the build of the recipes into images.
+Some portions of building the image will require root privileges, thus 
+you'll need to execute *make* below as root.  
+The argument to `make` is constructed as follows:
+`raspi_<model>_<release>.<result-type>`
+
+Whereby <model\> is one of `1`, `2`, `3` or `4`, <release\> is either `buster`
+or `bullseye` and <result-type\> is `img` or `yaml`.
+
+Model `1` should be used for the Raspberry Pi 0, 0w and 1, models A and
+B. Model `2` for the Raspberry Pi 2 models A and B. Model `3` for all
+models of the Raspberry Pi 3 and model `4` for all models of the
+Raspberry Pi 4.  
+So if you want to build the default image for a Raspberry Pi 3B+ with
+Bullseye, you can just issue:
 
 ```shell
-   make raspi_3.img
+   make raspi_3_bullseye.img
 ```
 
-You might also want to edit them to customize the built image. If you
+This will first create a `raspi_3_bullseye.yaml` file and then use that
+*yaml* recipe to build the image with `vmdb2`.
+
+You can also edit the `yaml` file to customize the built image. If you
 want to start from the platform-specific recipe, you can issue:
 
-```shell
-   make raspi_3.yaml
-```
+```shell 
+make raspi_3_bullseye.yaml 
+``` 
 The recipe drives [vmdb2](https://vmdb2.liw.fi/), the successor to
 `vmdebootstrap`. Please refer to [its
-documentation](https://vmdb2.liw.fi/documentation/) for further
-details; it is quite an easy format to understand.
+documentation](https://vmdb2.liw.fi/documentation/) for further details;
+it is quite an easy format to understand.
 
 Copy the generated file to a name descriptive enough for you (say,
-`my_raspi.yaml`). Once you have edited the recipe for your specific
-needs, you can generate the image by issuing the following (as root):
+`my_raspi_bullseye.yaml`). Once you have edited the recipe for your
+specific needs, you can generate the image by issuing the following (as
+root):
 
 ```shell
-    vmdb2 --rootfs-tarball=my_raspi.tar.gz --output \
-	my_raspi.img my_raspi.yaml --log my_raspi.log
+vmdb2 --rootfs-tarball=my_raspi_bullseye.tar.gz --output \
+my_raspi_bullseye.img my_raspi_bullseye.yaml --log my_raspi_bullseye.log
 ```
 
-This is, just follow what is done by the `_build_img` target of the Makefile.
+This is, just follow what is done by the `_build_img` target of the
+Makefile.
 
 ## Installing the image onto the Raspberry Pi
 
