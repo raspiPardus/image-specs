@@ -69,7 +69,7 @@ steps:
     - ssh
     - parted
     - dosfstools
-    - wireless-tools
+    - iw
     - wpasupplicant
     - __FIRMWARE_PKG__
     - __LINUX_IMAGE__
