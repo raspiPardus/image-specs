@@ -25,6 +25,7 @@ raspi_1_buster.yaml: raspi_base_buster.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-rpi/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyACM0,115200/" |\
 	grep -v "__OTHER_APT_ENABLE__" |\
 	sed "s/__HOST__/rpi1/" > $@
 
@@ -33,6 +34,7 @@ raspi_2_buster.yaml: raspi_base_buster.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-armmp/" | \
 	grep -v "__EXTRA_PKGS__" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyACM0,115200/" |\
 	sed "s/__OTHER_APT_ENABLE__//" |\
 	sed "s/__HOST__/rpi2/" > $@
 
@@ -41,6 +43,7 @@ raspi_3_buster.yaml: raspi_base_buster.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
 	sed "s/__OTHER_APT_ENABLE__//" |\
 	sed "s/__HOST__/rpi3/" > $@
 
@@ -52,6 +55,7 @@ raspi_4_buster.yaml: raspi_base_buster.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-arm64\/buster-backports/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211\/buster-backports/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
 	sed "s/__OTHER_APT_ENABLE__/deb http:\/\/deb.debian.org\/debian\/ buster-backports main contrib non-free # raspi 4 needs a kernel and raspi-firmware newer than buster's/" |\
 	sed "s/__HOST__/rpi4/" > $@
 
@@ -67,6 +71,7 @@ raspi_1_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-rpi/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyACM0,115200/" |\
 	sed "s/__HOST__/rpi_1/" > $@
 
 raspi_2_bullseye.yaml: raspi_base_bullseye.yaml
@@ -74,6 +79,7 @@ raspi_2_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-armmp/" | \
 	grep -v "__EXTRA_PKGS__" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyACM0,115200/" |\
 	sed "s/__HOST__/rpi_2/" > $@
 
 raspi_3_bullseye.yaml: raspi_base_bullseye.yaml
@@ -81,6 +87,7 @@ raspi_3_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
 	sed "s/__HOST__/rpi_3/" > $@
 
 raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
@@ -89,6 +96,7 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
 	sed "s/__HOST__/rpi_4/" > $@
 
 %.sha256: %.img.xz

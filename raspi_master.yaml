@@ -102,8 +102,11 @@ steps:
       mkdir -p "${ROOT?}/etc/systemd/system/systemd-remount-fs.service.requires/"
       ln -s /etc/systemd/system/rpi-resizerootfs.service "${ROOT?}/etc/systemd/system/systemd-remount-fs.service.requires/rpi-resizerootfs.service"
 
-      install -m 644 -o root -g root rootfs/etc/systemd/system/rpi-generate-ssh-host-keys.service "${ROOT?}/etc/systemd/system/"
+      install -m 644 -o root -g root rootfs/etc/systemd/system/rpi-reconfigure-raspi-firmware.service "${ROOT?}/etc/systemd/system/"
       mkdir -p "${ROOT?}/etc/systemd/system/multi-user.target.requires/"
+      ln -s /etc/systemd/system/rpi-reconfigure-raspi-firmware.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/rpi-reconfigure-raspi-firmware.service"
+
+      install -m 644 -o root -g root rootfs/etc/systemd/system/rpi-generate-ssh-host-keys.service "${ROOT?}/etc/systemd/system/"
       ln -s /etc/systemd/system/rpi-generate-ssh-host-keys.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/rpi-generate-ssh-host-keys.service"
       rm -f "${ROOT?}"/etc/ssh/ssh_host_*_key*
     root-fs: /
@@ -122,9 +125,12 @@ steps:
 
   # Modify the kernel commandline we take from the firmware to boot from
   # the partition labeled raspiroot instead of forcing it to mmcblk0p2
+  #
+  # These changes will be overwritten after the hardware is probed
+  # after dpkg reconfigures raspi-firmware (upon first boot).
   - chroot: /
     shell: |
-      ls -aR /boot
+      sed -i 's/^/console=__SERIAL_CONSOLE__ /' /boot/firmware/cmdline.txt
       sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
