@@ -4,7 +4,13 @@ raspi*.img.xz
 raspi*.log
 raspi*.tar.gz
 raspi*.sha256
-raspi_0w.yaml
-raspi_2.yaml
-raspi_3.yaml
-raspi_4.yaml
+raspi_base_buster.yaml
+raspi_1_buster.yaml
+raspi_2_buster.yaml
+raspi_3_buster.yaml
+raspi_4_buster.yaml
+raspi_base_bullseye.yaml
+raspi_1_bullseye.yaml
+raspi_2_bullseye.yaml
+raspi_3_bullseye.yaml
+raspi_4_bullseye.yaml
