@@ -25,13 +25,15 @@ Debian Buster (10) or higher system:
 * vmdb2 (>= 0.17)
 * dosfstools
 * binfmt-support
+* qemu-utils
 * qemu-user-static
+* debootstrap
 * time
 * kpartx
 
 To install these (as root):
 ```shell
-   apt install -y vmdb2 dosfstools qemu-user-static binfmt-support time kpartx
+   apt install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx
 ```
 
 Do note that –at least currently– vmdb2 uses some syntax that is available
