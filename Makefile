@@ -99,7 +99,7 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
 	sed "s/__HOST__/rpi_4/" > $@
 
-%.sha256: %.img.xz
+%.sha256: %.img
 	echo $@
 	sha256sum $(@:sha256=img) > $@
 
