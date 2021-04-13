@@ -18,7 +18,8 @@ target_platforms:
 raspi_base_buster.yaml: raspi_master.yaml
 	cat raspi_master.yaml | \
 	sed "s/__FIRMWARE_PKG__/raspi3-firmware/" | \
-	sed "s/__RELEASE__/buster/" > $@
+	sed "s/__RELEASE__/buster/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_1_buster.yaml: raspi_base_buster.yaml
 	cat raspi_base_buster.yaml | sed "s/__ARCH__/armel/" | \
@@ -27,7 +28,8 @@ raspi_1_buster.yaml: raspi_base_buster.yaml
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyAMA0,115200/" |\
 	grep -v "__OTHER_APT_ENABLE__" |\
-	sed "s/__HOST__/rpi1/" > $@
+	sed "s/__HOST__/rpi1/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_2_buster.yaml: raspi_base_buster.yaml
 	cat raspi_base_buster.yaml | sed "s/__ARCH__/armhf/" | \
@@ -36,7 +38,8 @@ raspi_2_buster.yaml: raspi_base_buster.yaml
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyAMA0,115200/" |\
 	sed "s/__OTHER_APT_ENABLE__//" |\
-	sed "s/__HOST__/rpi2/" > $@
+	sed "s/__HOST__/rpi2/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_3_buster.yaml: raspi_base_buster.yaml
 	cat raspi_base_buster.yaml | sed "s/__ARCH__/arm64/" | \
@@ -45,7 +48,8 @@ raspi_3_buster.yaml: raspi_base_buster.yaml
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
 	sed "s/__OTHER_APT_ENABLE__//" |\
-	sed "s/__HOST__/rpi3/" > $@
+	sed "s/__HOST__/rpi3/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_4_buster.yaml: raspi_base_buster.yaml
 	cat raspi_base_buster.yaml | sed "s/__ARCH__/arm64/" | \
@@ -57,7 +61,8 @@ raspi_4_buster.yaml: raspi_base_buster.yaml
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
 	sed "s/__OTHER_APT_ENABLE__/deb http:\/\/deb.debian.org\/debian\/ buster-backports main contrib non-free # raspi 4 needs a kernel and raspi-firmware newer than buster's/" |\
-	sed "s/__HOST__/rpi4/" > $@
+	sed "s/__HOST__/rpi4/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_base_bullseye.yaml: raspi_master.yaml
 	cat raspi_master.yaml | \
@@ -72,7 +77,8 @@ raspi_1_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyAMA0,115200/" |\
-	sed "s/__HOST__/rpi_1/" > $@
+	sed "s/__HOST__/rpi_1/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_2_bullseye.yaml: raspi_base_bullseye.yaml
 	cat raspi_base_bullseye.yaml | sed "s/__ARCH__/armhf/" | \
@@ -80,7 +86,8 @@ raspi_2_bullseye.yaml: raspi_base_bullseye.yaml
 	grep -v "__EXTRA_PKGS__" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyAMA0,115200/" |\
-	sed "s/__HOST__/rpi_2/" > $@
+	sed "s/__HOST__/rpi_2/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_3_bullseye.yaml: raspi_base_bullseye.yaml
 	cat raspi_base_bullseye.yaml | sed "s/__ARCH__/arm64/" | \
@@ -88,7 +95,8 @@ raspi_3_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
-	sed "s/__HOST__/rpi_3/" > $@
+	sed "s/__HOST__/rpi_3/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	cat raspi_base_bullseye.yaml | sed "s/__ARCH__/arm64/" | \
@@ -97,7 +105,8 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
-	sed "s/__HOST__/rpi_4/" > $@
+	sed "s/__HOST__/rpi_4/" |\
+	sed 's/__EXTRA_SHELL_CMDS__/echo "blacklist vc4" > $${ROOT?}\/etc\/modprobe.d\/vc4.conf/' > $@
 
 %.sha256: %.img
 	echo $@
