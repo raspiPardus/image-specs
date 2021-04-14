@@ -106,7 +106,7 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
 	sed "s/__HOST__/rpi_4/" |\
-	sed 's/__EXTRA_SHELL_CMDS__/echo "blacklist vc4" > $${ROOT?}\/etc\/modprobe.d\/vc4.conf/' > $@
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 %.sha256: %.img
 	echo $@
