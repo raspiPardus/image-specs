@@ -1,6 +1,6 @@
 [Unit]
 Description=Reconfigure raspi-firmware to regenerate config.txt matching actual hardware
-Before=local-fs-pre.target
+Before=sysinit.target
 DefaultDependencies=no
 RequiresMountsFor=/boot/firmware
 
@@ -11,4 +11,4 @@ ExecStart=/usr/sbin/dpkg-reconfigure raspi-firmware
 ExecStart=/bin/systemctl --no-reload disable %n
 
 [Install]
-RequiredBy=local-fs-pre.target
+RequiredBy=sysinit.target
