@@ -30,10 +30,12 @@ Debian Buster (10) or higher system:
 * debootstrap
 * time
 * kpartx
+* fakemachine (optional, only available on amd64)
 
 To install these (as root):
 ```shell
    apt install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx
+   apt install -y fakemachine
 ```
 
 Do note that –at least currently– vmdb2 uses some syntax that is available
@@ -50,8 +52,10 @@ little as possible in a parametrized way. The master recipe is
 [raspi_master.yaml](raspi_master.yaml).
 
 A Makefile is supplied to drive the build of the recipes into images.
-Some portions of building the image will require root privileges, thus 
-you'll need to execute *make* below as root.  
+If `fakemachine` is installed, it can be run as an unprivileged user.
+Otherwise, because some steps of building the image require root privileges,
+you'll need to execute `make` as root.
+
 The argument to `make` is constructed as follows:
 `raspi_<model>_<release>.<result-type>`
 

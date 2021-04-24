@@ -12,6 +12,12 @@ xzimages: $(addsuffix .img.xz,$(platforms))
 images: $(addsuffix .img,$(platforms))
 yaml: $(addsuffix .yaml,$(platforms))
 
+ifeq ($(shell id -u),0)
+as_root =
+else
+as_root = fakemachine -v $(CURDIR) -- env --chdir $(CURDIR)
+endif
+
 target_platforms:
 	@echo $(platforms)
 
@@ -122,7 +128,7 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 
 %.img: %.yaml
 	touch $(@:.img=.log)
-	time nice vmdb2 --verbose --rootfs-tarball=$(subst .img,.tar.gz,$@) --output=$@ $(subst .img,.yaml,$@) --log $(subst .img,.log,$@)
+	time nice $(as_root) vmdb2 --verbose --rootfs-tarball=$(subst .img,.tar.gz,$@) --output=$@ $(subst .img,.yaml,$@) --log $(subst .img,.log,$@)
 	chmod 0644 $@ $(@,.img=.log)
 
 _ck_root:
