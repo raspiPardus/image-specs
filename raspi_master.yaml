@@ -76,10 +76,11 @@ steps:
 
   - apt: install
     packages:
-    - ssh
-    - parted
+    - ca-certificates
     - dosfstools
     - iw
+    - parted
+    - ssh
     - wpasupplicant
     - __FIRMWARE_PKG__
     - __LINUX_IMAGE__
