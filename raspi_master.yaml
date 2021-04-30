@@ -59,6 +59,16 @@ steps:
       __OTHER_APT_ENABLE__
     unless: rootfs_unpacked
 
+  - copy-file: /etc/initramfs-tools/hooks/rpi-resizerootfs
+    src: rootfs/etc/initramfs-tools/hooks/rpi-resizerootfs
+    perm: 0755
+    unless: rootfs_unpacked
+
+  - copy-file: /etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
+    src: rootfs/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
+    perm: 0755
+    unless: rootfs_unpacked
+
   - chroot: /
     shell: |
       apt-get update
@@ -97,10 +107,9 @@ steps:
       mkdir -p "${ROOT?}/etc/systemd/system/basic.target.requires/"
       ln -s /etc/systemd/system/rpi-set-sysconf.service "${ROOT?}/etc/systemd/system/basic.target.requires/rpi-set-sysconf.service"
 
-      install -m 755 -o root -g root rootfs/usr/sbin/rpi-resizerootfs "${ROOT?}/usr/sbin/rpi-resizerootfs"
-      install -m 644 -o root -g root rootfs/etc/systemd/system/rpi-resizerootfs.service "${ROOT?}/etc/systemd/system/"
-      mkdir -p "${ROOT?}/etc/systemd/system/systemd-remount-fs.service.requires/"
-      ln -s /etc/systemd/system/rpi-resizerootfs.service "${ROOT?}/etc/systemd/system/systemd-remount-fs.service.requires/rpi-resizerootfs.service"
+      # Resize script is now in the initrd for first boot; no need to ship it.
+      rm -f "${ROOT?}/etc/initramfs-tools/hooks/rpi-resizerootfs"
+      rm -f "${ROOT?}/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs"
 
       install -m 644 -o root -g root rootfs/etc/systemd/system/rpi-reconfigure-raspi-firmware.service "${ROOT?}/etc/systemd/system/"
       mkdir -p "${ROOT?}/etc/systemd/system/multi-user.target.requires/"
