@@ -19,6 +19,7 @@ raspi_base_buster.yaml: raspi_master.yaml
 	cat raspi_master.yaml | \
 	sed "s/__FIRMWARE_PKG__/raspi3-firmware/" | \
 	sed "s/__RELEASE__/buster/" |\
+	sed "s/__SECURITY_SUITE__/buster\/updates/" |\
 	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_1_buster.yaml: raspi_base_buster.yaml
@@ -69,7 +70,7 @@ raspi_base_bullseye.yaml: raspi_master.yaml
 	sed "s/__RELEASE__/bullseye/" |\
 	sed "s/__FIRMWARE_PKG__/raspi-firmware/" | \
 	grep -v "__OTHER_APT_ENABLE__" |\
-	sed -e '/debian-security/ s/deb/# Uncomment after Bullseye becomes stable → deb/' > $@
+	sed "s/__SECURITY_SUITE__/bullseye-security/" > $@
 
 raspi_1_bullseye.yaml: raspi_base_bullseye.yaml
 	cat raspi_base_bullseye.yaml | sed "s/__ARCH__/armel/" | \

@@ -52,7 +52,7 @@ steps:
     trailing-newline: '1'
     contents: |
       deb http://deb.debian.org/debian __RELEASE__ main contrib non-free
-      deb http://deb.debian.org/debian-security __RELEASE__/updates main contrib non-free
+      deb http://deb.debian.org/debian-security __SECURITY_SUITE__ main contrib non-free
       # Backports are _not_ enabled by default.
       # Enable them by uncommenting the following line:
       # deb http://deb.debian.org/debian __RELEASE__-backports main contrib non-free
