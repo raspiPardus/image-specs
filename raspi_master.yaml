@@ -149,3 +149,15 @@ steps:
   - shell: |
       rm "${ROOT?}/etc/resolv.conf"
     root-fs: /
+
+  # Clear /etc/machine-id, it should be auto-generated upon first
+  # boot. From the manpage (machine-id(5)):
+  #
+  #   For normal operating system installations, where a custom image is
+  #   created for a specific machine, /etc/machine-id should be
+  #   populated during installation.
+  #
+  # Note this will also trigger ConditionFirstBoot=yes for systemd.
+  - chroot: /
+    shell: |
+      rm -f /etc/machine-id
