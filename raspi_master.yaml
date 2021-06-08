@@ -151,7 +151,7 @@ steps:
       rm "${ROOT?}/etc/resolv.conf"
     root-fs: /
 
-  # Clear /etc/machine-id and /var/lib/bus/machine-id, as both should
+  # Clear /etc/machine-id and /var/lib/dbus/machine-id, as both should
   # be auto-generated upon first boot. From the manpage
   # (machine-id(5)):
   #
@@ -162,4 +162,4 @@ steps:
   # Note this will also trigger ConditionFirstBoot=yes for systemd.
   - chroot: /
     shell: |
-      rm -f /etc/machine-id /var/lib/bus/machine-id
+      rm -f /etc/machine-id /var/lib/dbus/machine-id
