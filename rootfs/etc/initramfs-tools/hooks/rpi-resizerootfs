@@ -18,6 +18,6 @@ esac
 #copy_exec /usr/bin/tail
 copy_exec /sbin/blkid
 copy_exec /bin/lsblk
-copy_exec /sbin/sfdisk
+copy_exec /sbin/parted
 copy_exec /sbin/partprobe
 copy_exec /sbin/resize2fs
