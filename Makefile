@@ -29,6 +29,7 @@ raspi_base_buster.yaml: raspi_master.yaml
 	sed "s/__FIRMWARE_PKG__/raspi3-firmware/" | \
 	sed "s/__RELEASE__/buster/" |\
 	sed "s/__SECURITY_SUITE__/buster\/updates/" |\
+	sed "s/__FIX_FIRMWARE_PKG_NAME__/sed -i s\/raspi-firmware\/raspi3-firmware\/ \/etc\/systemd\/system\/rpi-reconfigure-raspi-firmware.service/" |\
 	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
 raspi_1_buster.yaml: raspi_base_buster.yaml
@@ -79,6 +80,7 @@ raspi_base_bullseye.yaml: raspi_master.yaml
 	sed "s/__RELEASE__/bullseye/" |\
 	sed "s/__FIRMWARE_PKG__/raspi-firmware/" | \
 	grep -v "__OTHER_APT_ENABLE__" |\
+	grep -v "__FIX_FIRMWARE_PKG_NAME__" |\
 	sed "s/__SECURITY_SUITE__/bullseye-security/" > $@
 
 raspi_1_bullseye.yaml: raspi_base_bullseye.yaml
