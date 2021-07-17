@@ -66,7 +66,7 @@ raspi_4_buster.yaml: raspi_base_buster.yaml
 	cat raspi_base_buster.yaml | sed "s/__ARCH__/arm64/" | \
 	sed "s#raspi3-firmware#raspi-firmware/buster-backports#" | \
 	sed "s#apt-get update#echo 'APT::Default-Release \"buster\";' > /etc/apt/apt.conf\n      apt-get update#" | \
-	sed "s#cmdline.txt#cmdline.txt\n      sed -i 's/cma=64M //' /boot/firmware/cmdline.txt\n      sed -i 's/cma=\\\$$CMA //' /etc/kernel/postinst.d/z50-raspi-firmware#" | \
+	sed "s#\(RASPIROOT.*cmdline.txt\)#\1\n      sed -i 's/cma=64M //' /boot/firmware/cmdline.txt\n      sed -i 's/cma=\\\$$CMA //' /etc/kernel/postinst.d/z50-raspi-firmware#" | \
 	sed "s/__LINUX_IMAGE__/linux-image-arm64\/buster-backports/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211\/buster-backports/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
@@ -112,7 +112,7 @@ raspi_3_bullseye.yaml: raspi_base_bullseye.yaml
 
 raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	cat raspi_base_bullseye.yaml | sed "s/__ARCH__/arm64/" | \
-	sed "s#cmdline.txt#cmdline.txt\n      sed -i 's/cma=64M //' /boot/firmware/cmdline.txt\n      sed -i 's/cma=\\\$$CMA //' /etc/kernel/postinst.d/z50-raspi-firmware#" | \
+	sed "s#\(RASPIROOT.*cmdline.txt\)#\1\n      sed -i 's/cma=64M //' /boot/firmware/cmdline.txt\n      sed -i 's/cma=\\\$$CMA //' /etc/kernel/postinst.d/z50-raspi-firmware#" | \
 	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
