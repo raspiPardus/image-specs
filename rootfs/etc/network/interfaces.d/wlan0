@@ -1,4 +1,4 @@
-# To enable wireless networking, uncomment the following lines and –naturally–
+# To enable wireless networking, uncomment the following lines and -naturally-
 # replace with your network's details.
 #
 # allow-hotplug wlan0
