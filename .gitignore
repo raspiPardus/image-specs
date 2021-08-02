@@ -1,4 +1,5 @@
 # suggested build result and log filenames
+raspi*.bmap
 raspi*.img
 raspi*.img.xz
 raspi*.log

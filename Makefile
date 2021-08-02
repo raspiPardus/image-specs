@@ -131,6 +131,9 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 %.img.xz: %.img
 	xz -f -k -z -9 $(@:.xz=)
 
+%.img.bmap: %.img
+	bmaptool create -o $@ $<
+
 %.img: %.yaml
 	touch $(@:.img=.log)
 	time nice $(as_root) vmdb2 --verbose --rootfs-tarball=$(subst .img,.tar.gz,$@) --output=$@ $(subst .img,.yaml,$@) --log $(subst .img,.log,$@)
@@ -145,12 +148,14 @@ _clean_images:
 	rm -f $(addsuffix .img,$(platforms))
 _clean_xzimages:
 	rm -f $(addsuffix .img.xz,$(platforms))
+_clean_bmaps:
+	rm -f $(addsuffix .img.bmap,$(platforms))
 _clean_shasums:
 	rm -f $(addsuffix .sha256,$(platforms)) $(addsuffix .xz.sha256,$(platforms))
 _clean_logs:
 	rm -f $(addsuffix .log,$(platforms))
 _clean_tarballs:
 	rm -f $(addsuffix .tar.gz,$(platforms))
-clean: _clean_xzimages _clean_images _clean_shasums _clean_yaml _clean_tarballs _clean_logs
+clean: _clean_xzimages _clean_images _clean_shasums _clean_yaml _clean_tarballs _clean_logs _clean_bmaps
 
 .PHONY: _ck_root _build_img clean _clean_images _clean_yaml _clean_tarballs _clean_logs
