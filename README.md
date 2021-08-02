@@ -20,26 +20,24 @@ cd image-specs
 ```
 
 For this you will first need to install the following packages on a
-Debian Buster (10) or higher system:
+Debian Bullseye (11) or higher system:
 
-* vmdb2 (>= 0.17)
-* dosfstools
 * binfmt-support
+* bmap-tools
+* debootstrap
+* dosfstools
+* fakemachine (optional, only available on amd64)
+* kpartx
 * qemu-utils
 * qemu-user-static
-* debootstrap
 * time
-* kpartx
-* fakemachine (optional, only available on amd64)
+* vmdb2 (>= 0.17)
 
 To install these (as root):
 ```shell
-   apt install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx
+   apt install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools
    apt install -y fakemachine
 ```
-
-Do note that –at least currently– vmdb2 uses some syntax that is available
-only in the version in testing (Bullseye).
 
 If debootstrap still fails with exec format error, try
 running `dpkg-reconfigure qemu-user-static`. This calls
@@ -65,7 +63,7 @@ or `bullseye` and <result-type\> is `img` or `yaml`.
 Model `1` should be used for the Raspberry Pi 0, 0w and 1, models A and
 B. Model `2` for the Raspberry Pi 2 models A and B. Model `3` for all
 models of the Raspberry Pi 3 and model `4` for all models of the
-Raspberry Pi 4.  
+Raspberry Pi 4.
 So if you want to build the default image for a Raspberry Pi 3B+ with
 Bullseye, you can just issue:
 
@@ -110,7 +108,20 @@ important parts of your system.  Double check it's the correct
 device!), copy the image onto the SD card:
 
 ```shell
-sudo dd if=raspi_3.img of=/dev/mmcblk0 bs=64k oflag=dsync status=progress
+bmaptool copy raspi_3_bullseye.img.xz /dev/mmcblk0
+```
+
+Alternatively, if you don't have `bmap-tools` installed, you can use
+`dd` with the compressed image:
+
+```shell
+xzcat raspi_3_bullseye.img | dd of=/dev/mmcblk0 bs=64k oflag=dsync status=progress
+```
+
+Or with the uncompressed image:
+
+```shell
+dd if=raspi_3_bullseye.img of=/dev/mmcblk0 bs=64k oflag=dsync status=progress
 ```
 
 Then, plug the SD card into the Raspberry Pi, and power it up.
