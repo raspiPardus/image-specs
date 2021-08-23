@@ -55,10 +55,10 @@ raspi_2_buster.yaml: raspi_base_buster.yaml
 raspi_3_buster.yaml: raspi_base_buster.yaml
 	cat raspi_base_buster.yaml | sed "s/__ARCH__/arm64/" | \
 	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
-	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
+	sed "s/__EXTRA_PKGS__/- firmware-brcm80211\/buster-backports/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
 	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
-	sed "s/__OTHER_APT_ENABLE__//" |\
+	sed "s/__OTHER_APT_ENABLE__/# raspi 3 needs firmware-brcm80211 newer than buster's for wifi\n      deb http:\/\/deb.debian.org\/debian\/ buster-backports main contrib non-free/" |\
 	sed "s/__HOST__/rpi3/" |\
 	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
