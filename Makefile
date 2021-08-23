@@ -79,6 +79,7 @@ raspi_base_bullseye.yaml: raspi_master.yaml
 	cat raspi_master.yaml | \
 	sed "s/__RELEASE__/bullseye/" |\
 	sed "s/__FIRMWARE_PKG__/raspi-firmware/" | \
+	sed "/touch \/etc\/machine-id/d" | \
 	grep -v "__OTHER_APT_ENABLE__" |\
 	grep -v "__FIX_FIRMWARE_PKG_NAME__" |\
 	sed "s/__SECURITY_SUITE__/bullseye-security/" > $@

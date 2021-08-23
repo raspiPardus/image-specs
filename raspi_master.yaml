@@ -161,6 +161,9 @@ steps:
   #   populated during installation.
   #
   # Note this will also trigger ConditionFirstBoot=yes for systemd.
+  # On Buster, /etc/machine-id should be an emtpy file, not an absent file
+  # On Bullseye, /etc/machine-id should not exist in an image
   - chroot: /
     shell: |
       rm -f /etc/machine-id /var/lib/dbus/machine-id
+      touch /etc/machine-id
