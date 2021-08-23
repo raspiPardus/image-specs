@@ -7,7 +7,7 @@ BUILD_RELEASES := buster bullseye
 
 platforms := $(foreach plat, $(BUILD_FAMILIES),$(foreach rel, $(BUILD_RELEASES),  raspi_$(plat)_$(rel)))
 
-shasums: $(addsuffix .sha256,$(platforms)) $(addsuffix .xz.sha256,$(platforms))
+shasums: $(addsuffix .sha256,$(platforms)) $(addsuffix .img.xz.sha256,$(platforms))
 xzimages: $(addsuffix .img.xz,$(platforms))
 images: $(addsuffix .img,$(platforms))
 yaml: $(addsuffix .yaml,$(platforms))
@@ -124,9 +124,9 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	echo $@
 	sha256sum $(@:sha256=img) > $@
 
-%.xz.sha256: %.img.xz
+%.img.xz.sha256: %.img.xz
 	echo $@
-	sha256sum $(@:xz.sha256=img.xz) > $@
+	sha256sum $(@:img.xz.sha256=img.xz) > $@
 
 %.img.xz: %.img
 	xz -f -k -z -9 $(@:.xz=)
@@ -151,7 +151,7 @@ _clean_xzimages:
 _clean_bmaps:
 	rm -f $(addsuffix .img.bmap,$(platforms))
 _clean_shasums:
-	rm -f $(addsuffix .sha256,$(platforms)) $(addsuffix .xz.sha256,$(platforms))
+	rm -f $(addsuffix .sha256,$(platforms)) $(addsuffix .img.xz.sha256,$(platforms))
 _clean_logs:
 	rm -f $(addsuffix .log,$(platforms))
 _clean_tarballs:
