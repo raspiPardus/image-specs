@@ -67,11 +67,6 @@ steps:
     perm: 0755
     unless: rootfs_unpacked
 
-  - chroot: /
-    shell: |
-      apt-get update
-    unless: rootfs_unpacked
-
   - apt: install
     packages:
     - ca-certificates
