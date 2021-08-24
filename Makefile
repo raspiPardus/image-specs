@@ -7,7 +7,7 @@ BUILD_RELEASES := buster bullseye
 
 platforms := $(foreach plat, $(BUILD_FAMILIES),$(foreach rel, $(BUILD_RELEASES),  raspi_$(plat)_$(rel)))
 
-shasums: $(addsuffix .sha256,$(platforms)) $(addsuffix .img.xz.sha256,$(platforms))
+shasums: $(addsuffix .img.sha256,$(platforms)) $(addsuffix .img.xz.sha256,$(platforms))
 xzimages: $(addsuffix .img.xz,$(platforms))
 images: $(addsuffix .img,$(platforms))
 yaml: $(addsuffix .yaml,$(platforms))
