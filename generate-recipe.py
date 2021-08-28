@@ -55,12 +55,6 @@ if version != '2':
 else:
     wireless_firmware = ''
 
-# Serial console:
-if version in ['1', '2']:
-    serial = 'ttyAMA0,115200'
-elif version in ['3', '4']:
-    serial = 'ttyS1,115200'
-
 # Pi 4 on buster requires some backports:
 backports_enable = False
 backports_suite = '%s-backports' % suite
@@ -70,6 +64,12 @@ if version == '4' and suite == 'buster':
     raspi_firmware = 'raspi-firmware/%s' % backports_suite
     wireless_firmware = 'firmware-brcm80211/%s' % backports_suite
     fix_firmware = False
+
+# Serial console:
+if version in ['1', '2']:
+    serial = 'ttyAMA0,115200'
+elif version in ['3', '4']:
+    serial = 'ttyS1,115200'
 
 # CMA fixup:
 extra_chroot_shell_cmds = []
@@ -140,14 +140,14 @@ with open('raspi_master.yaml', 'r') as in_file:
         in_text = in_file.read()
         out_text = in_text \
             .replace('__RELEASE__', suite) \
+            .replace('__ARCH__', arch) \
+            .replace('__LINUX_IMAGE__', linux) \
+            .replace('__DTB__', dtb) \
             .replace('__SECURITY_SUITE__', security_suite) \
             .replace('__RASPI_FIRMWARE__', raspi_firmware) \
             .replace('__WIRELESS_FIRMWARE__', wireless_firmware) \
             .replace('__SERIAL_CONSOLE__', serial) \
-            .replace('__LINUX_IMAGE__', linux) \
-            .replace('__DTB__', dtb) \
-            .replace('__HOST__', hostname) \
-            .replace('__ARCH__', arch)
+            .replace('__HOST__', hostname)
 
         out_text = align_replace(out_text, '__FIX_FIRMWARE_PKG_NAME__', fix_firmware_cmds)
         out_text = align_replace(out_text, '__EXTRA_ROOT_SHELL_CMDS__', extra_root_shell_cmds)
