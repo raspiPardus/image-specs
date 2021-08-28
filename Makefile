@@ -122,14 +122,14 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 
 %.img.sha256: %.img
 	echo $@
-	sha256sum $(@:img.sha256=img) > $@
+	sha256sum $< > $@
 
 %.img.xz.sha256: %.img.xz
 	echo $@
-	sha256sum $(@:img.xz.sha256=img.xz) > $@
+	sha256sum $< > $@
 
 %.img.xz: %.img
-	xz -f -k -z -9 $(@:.xz=)
+	xz -f -k -z -9 $<
 
 %.img.bmap: %.img
 	bmaptool create -o $@ $<
