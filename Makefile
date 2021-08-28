@@ -120,9 +120,9 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__HOST__/rpi_4/" |\
 	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
-%.sha256: %.img
+%.img.sha256: %.img
 	echo $@
-	sha256sum $(@:sha256=img) > $@
+	sha256sum $(@:img.sha256=img) > $@
 
 %.img.xz.sha256: %.img.xz
 	echo $@
