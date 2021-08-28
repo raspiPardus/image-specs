@@ -79,9 +79,9 @@ steps:
     - parted
     - ssh
     - wpasupplicant
-    - __FIRMWARE_PKG__
     - __LINUX_IMAGE__
-    __WIRELESS_FIRMWARE_PKG_MAYBE__
+    - __RASPI_FIRMWARE__
+    - __WIRELESS_FIRMWARE__
     tag: /
     unless: rootfs_unpacked
 

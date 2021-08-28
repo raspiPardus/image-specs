@@ -51,9 +51,9 @@ else:
 
 # Extra wireless firmware:
 if version != '2':
-    wireless_firmware_maybe = '- firmware-brcm80211'
+    wireless_firmware = 'firmware-brcm80211'
 else:
-    wireless_firmware_maybe = ''
+    wireless_firmware = ''
 
 # Serial console:
 if version in ['1', '2']:
@@ -68,7 +68,7 @@ if version == '4' and suite == 'buster':
     backports_enable = "# raspi 4 needs kernel and firmware newer than buster's"
     linux = '%s/%s' % (linux, backports_suite)
     raspi_firmware = 'raspi-firmware/%s' % backports_suite
-    wireless_firmware_maybe = '- firmware-brcm80211/%s' % backports_suite
+    wireless_firmware = 'firmware-brcm80211/%s' % backports_suite
     fix_firmware = False
 
 # CMA fixup:
@@ -141,8 +141,8 @@ with open('raspi_master.yaml', 'r') as in_file:
         out_text = in_text \
             .replace('__RELEASE__', suite) \
             .replace('__SECURITY_SUITE__', security_suite) \
-            .replace('__FIRMWARE_PKG__', raspi_firmware) \
-            .replace('__WIRELESS_FIRMWARE_PKG_MAYBE__', wireless_firmware_maybe) \
+            .replace('__RASPI_FIRMWARE__', raspi_firmware) \
+            .replace('__WIRELESS_FIRMWARE__', wireless_firmware) \
             .replace('__SERIAL_CONSOLE__', serial) \
             .replace('__LINUX_IMAGE__', linux) \
             .replace('__DTB__', dtb) \
@@ -155,6 +155,8 @@ with open('raspi_master.yaml', 'r') as in_file:
         out_text = align_replace(out_text, '__BACKPORTS__', backports_stanza.splitlines())
 
         # Try not to keep lines where the placeholder was replaced
-        # with nothing at all:
-        filtered = [x for x in out_text.splitlines() if not re.match(r'^\s+$', x)]
+        # with nothing at all (including on a "list item" line):
+        filtered = [x for x in out_text.splitlines()
+                    if not re.match(r'^\s+$', x)
+                    and not re.match(r'^\s+-\s*$', x)]
         out_file.write('\n'.join(filtered) + "\n")
