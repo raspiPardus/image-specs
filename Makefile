@@ -30,7 +30,9 @@ define dynamic_yaml_target =
   raspi_$(1)_$(2).yaml:
 	./generate-recipe.py $(1) $(2)
 endef
-$(foreach release,$(BUILD_RELEASES),$(foreach family,$(BUILD_FAMILIES),$(eval $(call dynamic_yaml_target,$(family),$(release)))))
+$(foreach release,$(BUILD_RELEASES), \
+  $(foreach family,$(BUILD_FAMILIES), \
+    $(eval $(call dynamic_yaml_target,$(family),$(release)))))
 
 %.img.sha256: %.img
 	echo $@
