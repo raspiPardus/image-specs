@@ -142,6 +142,7 @@ steps:
     shell: |
       sed -i 's/^/console=__SERIAL_CONSOLE__ /' /boot/firmware/cmdline.txt
       sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
+
       __EXTRA_CHROOT_SHELL_CMDS__
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
