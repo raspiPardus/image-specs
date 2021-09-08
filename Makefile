@@ -152,7 +152,7 @@ _clean_xzimages:
 _clean_bmaps:
 	rm -f $(addsuffix .img.bmap,$(platforms))
 _clean_shasums:
-	rm -f $(addsuffix .sha256,$(platforms)) $(addsuffix .img.xz.sha256,$(platforms))
+	rm -f $(addsuffix .img.sha256,$(platforms)) $(addsuffix .img.xz.sha256,$(platforms))
 _clean_logs:
 	rm -f $(addsuffix .log,$(platforms))
 _clean_tarballs:
