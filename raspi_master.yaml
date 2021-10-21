@@ -140,11 +140,13 @@ steps:
   # the partition labeled raspiroot instead of forcing it to mmcblk0p2
   #
   # These changes will be overwritten after the hardware is probed
-  # after dpkg reconfigures raspi-firmware (upon first boot).
+  # after dpkg reconfigures raspi-firmware (upon first boot), so make
+  # sure we don't lose label-based booting.
   - chroot: /
     shell: |
       sed -i 's/^/console=__SERIAL_CONSOLE__ /' /boot/firmware/cmdline.txt
       sed -i 's#root=/dev/mmcblk0p2#root=LABEL=RASPIROOT#' /boot/firmware/cmdline.txt
+      sed -i 's/^#ROOTPART=.*/ROOTPART=LABEL=RASPIROOT/' /etc/default/raspi-firmware
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
   # clears /etc/resolv.conf on its own.
