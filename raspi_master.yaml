@@ -144,7 +144,7 @@ steps:
   - chroot: /
     shell: |
       sed -i 's/^/console=__SERIAL_CONSOLE__ /' /boot/firmware/cmdline.txt
-      sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
+      sed -i 's#root=/dev/mmcblk0p2#root=LABEL=RASPIROOT#' /boot/firmware/cmdline.txt
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
   # clears /etc/resolv.conf on its own.
