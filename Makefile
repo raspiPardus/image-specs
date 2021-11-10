@@ -3,7 +3,7 @@ all: shasums
 # List all the supported and built Pi platforms here. They get expanded
 # to names like 'raspi_2_buster.yaml' and 'raspi_3_bullseye.img.xz'.
 BUILD_FAMILIES := 1 2 3 4
-BUILD_RELEASES := buster bullseye
+BUILD_RELEASES := buster bullseye bookworm
 
 platforms := $(foreach plat, $(BUILD_FAMILIES),$(foreach rel, $(BUILD_RELEASES),  raspi_$(plat)_$(rel)))
 
@@ -121,6 +121,51 @@ raspi_4_bullseye.yaml: raspi_base_bullseye.yaml
 	sed "s/__HOST__/rpi_4/" |\
 	grep -v '__EXTRA_SHELL_CMDS__' > $@
 
+raspi_base_bookworm.yaml: raspi_master.yaml
+	cat raspi_master.yaml | \
+	sed "s/__RELEASE__/bookworm/" |\
+	sed "s/__FIRMWARE_PKG__/raspi-firmware/" | \
+	grep -v "__OTHER_APT_ENABLE__" |\
+	grep -v "__FIX_FIRMWARE_PKG_NAME__" |\
+	grep -v "__SECURITY_SUITE__" > $@
+
+raspi_1_bookworm.yaml: raspi_base_bookworm.yaml
+	cat raspi_base_bookworm.yaml | sed "s/__ARCH__/armel/" | \
+	sed "s/__LINUX_IMAGE__/linux-image-rpi/" | \
+	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
+	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyAMA0,115200/" |\
+	sed "s/__HOST__/rpi_1/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
+
+raspi_2_bookworm.yaml: raspi_base_bookworm.yaml
+	cat raspi_base_bookworm.yaml | sed "s/__ARCH__/armhf/" | \
+	sed "s/__LINUX_IMAGE__/linux-image-armmp/" | \
+	grep -v "__EXTRA_PKGS__" | \
+	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyAMA0,115200/" |\
+	sed "s/__HOST__/rpi_2/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
+
+raspi_3_bookworm.yaml: raspi_base_bookworm.yaml
+	cat raspi_base_bookworm.yaml | sed "s/__ARCH__/arm64/" | \
+	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
+	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
+	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
+	sed "s/__HOST__/rpi_3/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
+
+raspi_4_bookworm.yaml: raspi_base_bookworm.yaml
+	cat raspi_base_bookworm.yaml | sed "s/__ARCH__/arm64/" | \
+	sed "s#\(RASPIROOT.*cmdline.txt\)#\1\n      sed -i 's/cma=64M //' /boot/firmware/cmdline.txt\n      sed -i 's/cma=\\\$$CMA //' /etc/kernel/postinst.d/z50-raspi-firmware#" | \
+	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
+	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
+	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
+	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" |\
+	sed "s/__HOST__/rpi_4/" |\
+	grep -v '__EXTRA_SHELL_CMDS__' > $@
+
 %.img.sha256: %.img
 	echo $@
 	sha256sum $< > $@
@@ -144,7 +189,7 @@ _ck_root:
 	[ `whoami` = 'root' ] # Only root can summon vmdb2 ☹
 
 _clean_yaml:
-	rm -f $(addsuffix .yaml,$(platforms)) raspi_base_buster.yaml raspi_base_bullseye.yaml
+	rm -f $(addsuffix .yaml,$(platforms)) raspi_base_buster.yaml raspi_base_bullseye.yaml raspi_base_bookworm.yaml
 _clean_images:
 	rm -f $(addsuffix .img,$(platforms))
 _clean_xzimages:
