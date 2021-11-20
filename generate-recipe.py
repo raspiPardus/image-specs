@@ -17,7 +17,7 @@ if version not in ["1", "2", "3", "4"]:
     sys.exit(1)
 
 suite = sys.argv[2]
-if suite not in ['buster', 'bullseye']:
+if suite not in ['buster', 'bullseye', 'bookworm']:
     print("E: unsupported suite %s" % suite, file=sys.stderr)
     sys.exit(1)
 target_yaml = 'raspi_%s_%s.yaml' % (version, suite)

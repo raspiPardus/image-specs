@@ -3,7 +3,7 @@ all: shasums
 # List all the supported and built Pi platforms here. They get expanded
 # to names like 'raspi_2_buster.yaml' and 'raspi_3_bullseye.img.xz'.
 BUILD_FAMILIES := 1 2 3 4
-BUILD_RELEASES := buster bullseye
+BUILD_RELEASES := buster bullseye bookworm
 
 platforms := $(foreach plat, $(BUILD_FAMILIES),$(foreach rel, $(BUILD_RELEASES),  raspi_$(plat)_$(rel)))
 
