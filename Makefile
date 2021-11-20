@@ -158,7 +158,7 @@ raspi_3_bookworm.yaml: raspi_base_bookworm.yaml
 
 raspi_4_bookworm.yaml: raspi_base_bookworm.yaml
 	cat raspi_base_bookworm.yaml | sed "s/__ARCH__/arm64/" | \
-	sed "s#\(RASPIROOT.*cmdline.txt\)#\1\n      sed -i 's/cma=64M //' /boot/firmware/cmdline.txt\n      sed -i 's/cma=\\\$$CMA //' /etc/kernel/postinst.d/z50-raspi-firmware#" | \
+	sed "s#\(RASPIROOT.*cmdline.txt\)#\1\n      sed -i 's/cma=64M //' /boot/firmware/cmdline.txt#" | \
 	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
 	sed "s/__EXTRA_PKGS__/- firmware-brcm80211/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" |\
