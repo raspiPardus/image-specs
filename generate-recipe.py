@@ -65,6 +65,10 @@ if version == '4' and suite == 'buster':
     wireless_firmware = 'firmware-brcm80211/%s' % backports_suite
     fix_firmware = False
 
+if version == '3' and suite == 'buster':
+    backports_enable = "# raspi 3 needs firmware-brcm80211 newer than buster's for wifi"
+    wireless_firmware = 'firmware-brcm80211/%s' % backports_suite
+
 # Serial console:
 if version in ['1', '2']:
     serial = 'ttyAMA0,115200'
