@@ -137,14 +137,17 @@ steps:
       rm -rf /var/lib/apt/lists
 
   # Modify the kernel commandline we take from the firmware to boot from
-  # the partition labeled raspiroot instead of forcing it to mmcblk0p2
+  # the partition labeled raspiroot instead of forcing it to mmcblk0p2.
+  # Also insert the serial console right before the root= parameter.
   #
   # These changes will be overwritten after the hardware is probed
-  # after dpkg reconfigures raspi-firmware (upon first boot).
+  # after dpkg reconfigures raspi-firmware (upon first boot), so make
+  # sure we don't lose label-based booting.
   - chroot: /
     shell: |
-      sed -i 's/^/console=__SERIAL_CONSOLE__ /' /boot/firmware/cmdline.txt
-      sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
+      sed -i 's/root=/console=__SERIAL_CONSOLE__ root=/' /boot/firmware/cmdline.txt
+      sed -i 's#root=/dev/mmcblk0p2#root=LABEL=RASPIROOT#' /boot/firmware/cmdline.txt
+      sed -i 's/^#ROOTPART=.*/ROOTPART=LABEL=RASPIROOT/' /etc/default/raspi-firmware
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
   # clears /etc/resolv.conf on its own.
