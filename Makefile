@@ -57,7 +57,7 @@ _ck_root:
 	[ `whoami` = 'root' ] # Only root can summon vmdb2 ☹
 
 _clean_yaml:
-	rm -f $(addsuffix .yaml,$(platforms)) raspi_base_buster.yaml raspi_base_bullseye.yaml
+	rm -f $(addsuffix .yaml,$(platforms)) raspi_base_buster.yaml raspi_base_bullseye.yaml raspi_base_bookworm.yaml
 _clean_images:
 	rm -f $(addsuffix .img,$(platforms))
 _clean_xzimages:
