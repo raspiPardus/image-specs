@@ -113,6 +113,12 @@ else:
 # deb http://deb.debian.org/debian %s main contrib non-free
 """ % backports_suite
 
+# Buster requires an existing, empty /etc/machine-id file:
+if suite == 'buster':
+    touch_machine_id = 'touch /etc/machine-id'
+else:
+    touch_machine_id = ''
+
 
 ### Write results:
 
@@ -147,7 +153,8 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__RASPI_FIRMWARE__', raspi_firmware) \
             .replace('__WIRELESS_FIRMWARE__', wireless_firmware) \
             .replace('__SERIAL_CONSOLE__', serial) \
-            .replace('__HOST__', hostname)
+            .replace('__HOST__', hostname) \
+            .replace('__TOUCH_MACHINE_ID__', touch_machine_id)
 
         out_text = align_replace(out_text, '__FIX_FIRMWARE_PKG_NAME__', fix_firmware_cmds)
         out_text = align_replace(out_text, '__EXTRA_ROOT_SHELL_CMDS__', extra_root_shell_cmds)
