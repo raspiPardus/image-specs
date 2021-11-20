@@ -80,7 +80,6 @@ extra_chroot_shell_cmds = []
 if version == '4':
     extra_chroot_shell_cmds = [
         "sed -i 's/cma=64M //' /boot/firmware/cmdline.txt",
-        "sed -i 's/cma=$CMA //' /etc/kernel/postinst.d/z50-raspi-firmware",
     ]
 
 # XXX: The disparity between suite seems to be a bug, pick a naming
