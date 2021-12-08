@@ -145,7 +145,7 @@ steps:
     shell: |
       sed -i 's/root=/console=__SERIAL_CONSOLE__ root=/' /boot/firmware/cmdline.txt
       sed -i 's#root=/dev/mmcblk0p2#root=LABEL=RASPIROOT#' /boot/firmware/cmdline.txt
-      sed -i 's/^#ROOTPART=.*/ROOTPART=LABEL=RASPIROOT/' /etc/default/raspi-firmware
+      sed -i 's/^#ROOTPART=.*/ROOTPART=LABEL=RASPIROOT/' /etc/default/raspi*-firmware
 
       __EXTRA_CHROOT_SHELL_CMDS__
 
