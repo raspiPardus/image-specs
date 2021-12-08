@@ -32,10 +32,11 @@ Debian Bullseye (11) or higher system:
 * qemu-user-static
 * time
 * vmdb2 (>= 0.17)
+* python3
 
 To install these (as root):
 ```shell
-   apt install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools
+   apt install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools python3
    apt install -y fakemachine
 ```
 
