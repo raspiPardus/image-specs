@@ -79,6 +79,7 @@ steps:
     - parted
     - ssh
     - wpasupplicant
+    - __SYSTEMD_TIMESYNCD__
     - __LINUX_IMAGE__
     - __RASPI_FIRMWARE__
     - __WIRELESS_FIRMWARE__

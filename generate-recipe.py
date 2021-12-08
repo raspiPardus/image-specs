@@ -122,6 +122,12 @@ if suite == 'buster':
 else:
     touch_machine_id = ''
 
+# Buster shipped timesyncd directly into systemd:
+if suite == 'buster':
+    systemd_timesyncd = 'systemd'
+else:
+    systemd_timesyncd = 'systemd-timesyncd'
+
 
 ### Write results:
 
@@ -153,6 +159,7 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__LINUX_IMAGE__', linux) \
             .replace('__DTB__', dtb) \
             .replace('__SECURITY_SUITE__', security_suite) \
+            .replace('__SYSTEMD_TIMESYNCD__', systemd_timesyncd) \
             .replace('__RASPI_FIRMWARE__', raspi_firmware) \
             .replace('__WIRELESS_FIRMWARE__', wireless_firmware) \
             .replace('__SERIAL_CONSOLE__', serial) \
