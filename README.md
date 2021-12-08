@@ -10,7 +10,7 @@ latest pre-built image.
 
 ## Option 2: Building your own image
 
-If you prefer, you can build a Debian buster Raspberry Pi image
+If you prefer, you can build a Debian Raspberry Pi image
 yourself. If you are reading this document online, you should first
 clone this repository:
 
