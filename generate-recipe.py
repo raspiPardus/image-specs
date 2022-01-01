@@ -2,6 +2,7 @@
 
 import re
 import sys
+import subprocess
 
 # pylint: disable=invalid-name
 
@@ -128,6 +129,7 @@ if suite == 'buster':
 else:
     systemd_timesyncd = 'systemd-timesyncd'
 
+gitcommit = subprocess.getoutput("git show -s --pretty='format:%C(auto)%h (%s, %ad)' --date=short ")
 
 ### Write results:
 
@@ -164,7 +166,8 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__WIRELESS_FIRMWARE__', wireless_firmware) \
             .replace('__SERIAL_CONSOLE__', serial) \
             .replace('__HOST__', hostname) \
-            .replace('__TOUCH_MACHINE_ID__', touch_machine_id)
+            .replace('__TOUCH_MACHINE_ID__', touch_machine_id) \
+            .replace('__GITCOMMIT__', gitcommit)
 
         out_text = align_replace(out_text, '__FIX_FIRMWARE_PKG_NAME__', fix_firmware_cmds)
         out_text = align_replace(out_text, '__EXTRA_ROOT_SHELL_CMDS__', extra_root_shell_cmds)

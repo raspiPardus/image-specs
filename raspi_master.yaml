@@ -1,4 +1,5 @@
 # See https://wiki.debian.org/RaspberryPi3 for known issues and more details.
+# image.yml based on revision: __GITCOMMIT__
 
 steps:
   - mkimg: "{{ output }}"
@@ -170,3 +171,8 @@ steps:
     shell: |
       rm -f /etc/machine-id /var/lib/dbus/machine-id
       __TOUCH_MACHINE_ID__
+
+  # Create /etc/raspi-image-id to know, from what commit the image was built
+  - chroot: /
+    shell: |
+      echo "image based on revision: __GITCOMMIT__ " > "/etc/raspi-image-id"
