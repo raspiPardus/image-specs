@@ -175,4 +175,4 @@ steps:
   # Create /etc/raspi-image-id to know, from what commit the image was built
   - chroot: /
     shell: |
-      echo "image based on revision: __GITCOMMIT__ " > "/etc/raspi-image-id"
+      echo "image based on revision: __GITCOMMIT__ and build on __BUILDTIME__ (UTC)" > "/etc/raspi-image-id"

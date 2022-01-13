@@ -130,6 +130,7 @@ else:
     systemd_timesyncd = 'systemd-timesyncd'
 
 gitcommit = subprocess.getoutput("git show -s --pretty='format:%C(auto)%h (%s, %ad)' --date=short ")
+buildtime = subprocess.getoutput("date --utc +'%Y-%m-%d %H:%M'")
 
 ### Write results:
 
@@ -167,7 +168,8 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__SERIAL_CONSOLE__', serial) \
             .replace('__HOST__', hostname) \
             .replace('__TOUCH_MACHINE_ID__', touch_machine_id) \
-            .replace('__GITCOMMIT__', gitcommit)
+            .replace('__GITCOMMIT__', gitcommit) \
+            .replace('__BUILDTIME__', buildtime)
 
         out_text = align_replace(out_text, '__FIX_FIRMWARE_PKG_NAME__', fix_firmware_cmds)
         out_text = align_replace(out_text, '__EXTRA_ROOT_SHELL_CMDS__', extra_root_shell_cmds)
