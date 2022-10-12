@@ -45,14 +45,13 @@ steps:
     arch: __ARCH__
     components:
     - main
-    - contrib
-    - non-free
+    - __FIRMWARE_COMPONENT__
     unless: rootfs_unpacked
 
   - create-file: /etc/apt/sources.list
     contents: |+
-      deb http://deb.debian.org/debian __RELEASE__ main contrib non-free
-      deb http://security.debian.org/debian-security __SECURITY_SUITE__ main contrib non-free
+      deb http://deb.debian.org/debian __RELEASE__ main __FIRMWARE_COMPONENT__
+      deb http://security.debian.org/debian-security __SECURITY_SUITE__ main __FIRMWARE_COMPONENT__
       __BACKPORTS__
 
     unless: rootfs_unpacked

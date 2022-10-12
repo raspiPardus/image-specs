@@ -50,6 +50,19 @@ else:
     raspi_firmware = 'raspi-firmware'
     fix_firmware = False
 
+# Bookworm introduced the 'non-free-firmware' component¹; before that,
+# raspi-firmware was in 'non-free'
+#
+# ¹ https://www.debian.org/vote/2022/vote_003
+if suite == 'bookworm':
+    firmware_component = 'non-free-firmware'
+else:
+    # We only need "non-free". "Contrib" was before included as well,
+    # as they are usually enabled together, but adding a second YAML
+    # element... makes the resulting code ugly and brittle. Besides,
+    # we don't use anything from contrib!
+    firmware_component = 'non-free'
+
 # Extra wireless firmware:
 if version != '2':
     wireless_firmware = 'firmware-brcm80211'
@@ -108,14 +121,15 @@ else:
 if backports_enable:
     backports_stanza = """
 %s
-deb http://deb.debian.org/debian/ %s main contrib non-free
-""" % (backports_enable, backports_suite)
+deb http://deb.debian.org/debian/ %s main %s
+""" % (backports_enable, backports_suite, firmware_component)
 else:
+    # ugh
     backports_stanza = """
 # Backports are _not_ enabled by default.
 # Enable them by uncommenting the following line:
-# deb http://deb.debian.org/debian %s main contrib non-free
-""" % backports_suite
+# deb http://deb.debian.org/debian %s main %s
+""" % (backports_suite, firmware_component)
 
 # Buster requires an existing, empty /etc/machine-id file:
 if suite == 'buster':
@@ -159,6 +173,7 @@ with open('raspi_master.yaml', 'r') as in_file:
         out_text = in_text \
             .replace('__RELEASE__', suite) \
             .replace('__ARCH__', arch) \
+            .replace('__FIRMWARE_COMPONENT__', firmware_component) \
             .replace('__LINUX_IMAGE__', linux) \
             .replace('__DTB__', dtb) \
             .replace('__SECURITY_SUITE__', security_suite) \
