@@ -57,10 +57,6 @@ else:
 if suite == 'bookworm':
     firmware_component = 'non-free-firmware'
 else:
-    # We only need "non-free". "Contrib" was before included as well,
-    # as they are usually enabled together, but adding a second YAML
-    # element... makes the resulting code ugly and brittle. Besides,
-    # we don't use anything from contrib!
     firmware_component = 'non-free'
 
 # Extra wireless firmware:
