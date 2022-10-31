@@ -15,3 +15,8 @@ raspi_1_bullseye.yaml
 raspi_2_bullseye.yaml
 raspi_3_bullseye.yaml
 raspi_4_bullseye.yaml
+raspi_base_bookworm.yaml
+raspi_1_bookworm.yaml
+raspi_2_bookworm.yaml
+raspi_3_bookworm.yaml
+raspi_4_bookworm.yaml
