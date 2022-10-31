@@ -56,8 +56,10 @@ else:
 # ¹ https://www.debian.org/vote/2022/vote_003
 if suite == 'bookworm':
     firmware_component = 'non-free-firmware'
+    firmware_component_old = 'non-free'
 else:
     firmware_component = 'non-free'
+    firmware_component_old = ''
 
 # Extra wireless firmware:
 if version != '2':
@@ -170,6 +172,7 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__RELEASE__', suite) \
             .replace('__ARCH__', arch) \
             .replace('__FIRMWARE_COMPONENT__', firmware_component) \
+            .replace('__FIRMWARE_COMPONENT_OLD__', firmware_component_old) \
             .replace('__LINUX_IMAGE__', linux) \
             .replace('__DTB__', dtb) \
             .replace('__SECURITY_SUITE__', security_suite) \
