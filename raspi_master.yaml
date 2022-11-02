@@ -13,7 +13,7 @@ steps:
     device: "{{ output }}"
     start: 4MiB
     end: 512MiB
-    tag: /boot
+    tag: tag-firmware
 
   - mkpart: primary
     device: "{{ output }}"
@@ -24,7 +24,7 @@ steps:
   - kpartx: "{{ output }}"
 
   - mkfs: vfat
-    partition: /boot
+    partition: tag-firmware
     label: RASPIFIRM
 
   - mkfs: ext4
@@ -33,7 +33,7 @@ steps:
 
   - mount: tag-root
 
-  - mount: /boot
+  - mount: tag-firmware
     mount-on: tag-root
     dirname: '/boot/firmware'
 
