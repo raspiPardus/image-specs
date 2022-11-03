@@ -1,7 +1,12 @@
 stages:
   - build
 
+variables:
+  DEBIAN_FRONTEND: "noninteractive"
+
 build:
+  stage: build
+  image: debian:sid
   retry:
     max: 2
     when: always
@@ -9,8 +14,6 @@ build:
     - branches
     - master # I suppose that we can work directly on master
     - merge_request
-  stage: build
-  image: debian:sid
   dependencies: []
   script:
     - apt-get update && apt-get install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools python3 fakemachine make
@@ -20,7 +23,4 @@ build:
   artifacts:
     paths:
       - build
-
-variables:
-  DEBIAN_FRONTEND: "noninteractive"
 
