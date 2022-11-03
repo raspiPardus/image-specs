@@ -7,7 +7,7 @@ variables:
   SALSA_CI_IMAGES: registry.salsa.debian.org/salsa-ci-team/pipeline
   BASE_CI_IMAGES: ${SALSA_CI_IMAGES}/base
 
-build:
+build-yamls:
   stage: build
   image: $BASE_CI_IMAGES:unstable
   retry:
