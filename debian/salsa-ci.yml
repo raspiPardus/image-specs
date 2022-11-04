@@ -1,16 +1,19 @@
 stages:
   - build
 
-build:
-  retry:
-    max: 2
-    when: always
+variables:
+  DEBIAN_FRONTEND: "noninteractive"
+  # At https://salsa.debian.org/salsa-ci-team/pipeline/container_registry one can see which images are available
+  SALSA_CI_IMAGES: registry.salsa.debian.org/salsa-ci-team/pipeline
+  BASE_CI_IMAGES: ${SALSA_CI_IMAGES}/base
+
+build-yamls:
+  stage: build
+  image: $BASE_CI_IMAGES:unstable
   only:
     - branches
     - master # I suppose that we can work directly on master
     - merge_request
-  stage: build
-  image: debian:sid
   dependencies: []
   script:
     - apt-get update && apt-get install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools python3 fakemachine make
@@ -20,7 +23,4 @@ build:
   artifacts:
     paths:
       - build
-
-variables:
-  DEBIAN_FRONTEND: "noninteractive"
 
