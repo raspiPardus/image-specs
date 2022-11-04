@@ -10,10 +10,6 @@ variables:
 build-yamls:
   stage: build
   image: $BASE_CI_IMAGES:unstable
-  only:
-    - branches
-    - master # I suppose that we can work directly on master
-    - merge_request
   dependencies: []
   script:
     - apt-get update && apt-get install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools python3 fakemachine make
