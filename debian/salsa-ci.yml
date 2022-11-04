@@ -10,9 +10,6 @@ variables:
 build-yamls:
   stage: build
   image: $BASE_CI_IMAGES:unstable
-  retry:
-    max: 2
-    when: always
   only:
     - branches
     - master # I suppose that we can work directly on master
