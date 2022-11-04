@@ -13,35 +13,35 @@ steps:
     device: "{{ output }}"
     start: 4MiB
     end: 512MiB
-    tag: /boot
+    tag: tag-firmware
 
   - mkpart: primary
     device: "{{ output }}"
     start: 512MiB
     end: 100%
-    tag: /
+    tag: tag-root
 
   - kpartx: "{{ output }}"
 
   - mkfs: vfat
-    partition: /boot
+    partition: tag-firmware
     label: RASPIFIRM
 
   - mkfs: ext4
-    partition: /
+    partition: tag-root
     label: RASPIROOT
 
-  - mount: /
+  - mount: tag-root
 
-  - mount: /boot
-    mount-on: /
+  - mount: tag-firmware
+    mount-on: tag-root
     dirname: '/boot/firmware'
 
-  - unpack-rootfs: /
+  - unpack-rootfs: tag-root
 
   - qemu-debootstrap: __RELEASE__
     mirror: http://deb.debian.org/debian
-    target: /
+    target: tag-root
     arch: __ARCH__
     components:
     - main
@@ -80,10 +80,10 @@ steps:
     - __LINUX_IMAGE__
     - __RASPI_FIRMWARE__
     - __WIRELESS_FIRMWARE__
-    tag: /
+    tag: tag-root
     unless: rootfs_unpacked
 
-  - cache-rootfs: /
+  - cache-rootfs: tag-root
     unless: rootfs_unpacked
 
   - shell: |
@@ -117,16 +117,16 @@ steps:
       rm -f "${ROOT?}"/etc/ssh/ssh_host_*_key*
 
       __EXTRA_ROOT_SHELL_CMDS__
-    root-fs: /
+    root-fs: tag-root
 
   # Copy the relevant device tree files to the boot partition
-  - chroot: /
+  - chroot: tag-root
     shell: |
       install -m 644 -o root -g root __DTB__ /boot/firmware/
 
   # Clean up archive cache (likely not useful) and lists (likely outdated) to
   # reduce image size by several hundred megabytes.
-  - chroot: /
+  - chroot: tag-root
     shell: |
       apt-get clean
       rm -rf /var/lib/apt/lists
@@ -138,7 +138,7 @@ steps:
   # These changes will be overwritten after the hardware is probed
   # after dpkg reconfigures raspi-firmware (upon first boot), so make
   # sure we don't lose label-based booting.
-  - chroot: /
+  - chroot: tag-root
     shell: |
       sed -i 's/root=/console=__SERIAL_CONSOLE__ root=/' /boot/firmware/cmdline.txt
       sed -i 's#root=/dev/mmcblk0p2#root=LABEL=RASPIROOT#' /boot/firmware/cmdline.txt
@@ -150,7 +150,7 @@ steps:
   # clears /etc/resolv.conf on its own.
   - shell: |
       rm "${ROOT?}/etc/resolv.conf"
-    root-fs: /
+    root-fs: tag-root
 
   # Clear /etc/machine-id and /var/lib/dbus/machine-id, as both should
   # be auto-generated upon first boot. From the manpage
@@ -163,12 +163,12 @@ steps:
   # Note this will also trigger ConditionFirstBoot=yes for systemd.
   # On Buster, /etc/machine-id should be an emtpy file, not an absent file
   # On Bullseye, /etc/machine-id should not exist in an image
-  - chroot: /
+  - chroot: tag-root
     shell: |
       rm -f /etc/machine-id /var/lib/dbus/machine-id
       __TOUCH_MACHINE_ID__
 
   # Create /etc/raspi-image-id to know, from what commit the image was built
-  - chroot: /
+  - chroot: tag-root
     shell: |
       echo "image based on revision: __GITCOMMIT__ and build on __BUILDTIME__ (UTC)" > "/etc/raspi-image-id"
