@@ -12,11 +12,12 @@ build-yamls:
   image: $BASE_CI_IMAGES:unstable
   dependencies: []
   script:
-    - apt-get update && eatmydata apt-get install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools python3 fakemachine make
+    - apt-get update && apt-get upgrade -y
+    - eatmydata apt-get install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools python3 fakemachine make
     - make yaml
     - mkdir build
-    - cp raspi*.yaml build
+    - cp raspi*.yaml build/
   artifacts:
     paths:
-      - build
+      - build/
 
