@@ -1,4 +1,7 @@
+---
 stages:
+  # Garbage in is garbage out, so verify our input
+  - check input
   - build
 
 variables:
@@ -7,7 +10,16 @@ variables:
   SALSA_CI_IMAGES: registry.salsa.debian.org/salsa-ci-team/pipeline
   BASE_CI_IMAGES: ${SALSA_CI_IMAGES}/base
 
-build-yamls:
+check yamls:
+  stage: check input
+  image: $BASE_CI_IMAGES:unstable
+  dependencies: []
+  script:
+    - apt-get update && apt-get upgrade -y
+    - apt-get install -y yamllint
+    - yamllint -c debian/yamllint.yml .
+
+build yamls:
   stage: build
   image: $BASE_CI_IMAGES:unstable
   dependencies: []
@@ -20,4 +32,3 @@ build-yamls:
   artifacts:
     paths:
       - build/
-
