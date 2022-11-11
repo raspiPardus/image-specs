@@ -10,7 +10,7 @@ variables:
   SALSA_CI_IMAGES: registry.salsa.debian.org/salsa-ci-team/pipeline
   BASE_CI_IMAGES: ${SALSA_CI_IMAGES}/base
 
-check yamls:
+yamllint:
   stage: check input
   image: $BASE_CI_IMAGES:unstable
   dependencies: []
@@ -18,6 +18,15 @@ check yamls:
     - apt-get update && apt-get upgrade -y
     - apt-get install -y yamllint
     - yamllint -c debian/yamllint.yml .
+
+shellcheck:
+  stage: check input
+  image: $BASE_CI_IMAGES:unstable
+  dependencies: []
+  script:
+    - apt-get update && apt-get upgrade -y
+    - apt-get install -y shellcheck
+    - shellcheck -e SC1090,SC1091,SC2086,SC2154 -s dash $(find rootfs/etc/initramfs-tools -type f -executable  | xargs grep -l '^#!/bin/sh')
 
 build yamls:
   stage: build
