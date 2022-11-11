@@ -1,3 +1,4 @@
+---
 # See https://wiki.debian.org/RaspberryPi3 for known issues and more details.
 # image.yml based on revision: __GITCOMMIT__
 
@@ -44,9 +45,9 @@ steps:
     target: tag-root
     arch: __ARCH__
     components:
-    - main
-    - __FIRMWARE_COMPONENT__
-    - __FIRMWARE_COMPONENT_OLD__
+      - main
+      - __FIRMWARE_COMPONENT__
+      - __FIRMWARE_COMPONENT_OLD__
     unless: rootfs_unpacked
 
   - create-file: /etc/apt/sources.list
@@ -70,17 +71,17 @@ steps:
 
   - apt: install
     packages:
-    - ca-certificates
-    - dosfstools
-    - iw
-    - parted
-    - ssh
-    - wpasupplicant
-    - __SYSTEMD_TIMESYNCD__
-    - __LINUX_IMAGE__
-    - __RASPI_FIRMWARE__
-    - __WIRELESS_FIRMWARE__
-    - __BLUETOOTH_FIRMWARE__
+      - ca-certificates
+      - dosfstools
+      - iw
+      - parted
+      - ssh
+      - wpasupplicant
+      - __SYSTEMD_TIMESYNCD__
+      - __LINUX_IMAGE__
+      - __RASPI_FIRMWARE__
+      - __WIRELESS_FIRMWARE__
+      - __BLUETOOTH_FIRMWARE__
     tag: tag-root
     unless: rootfs_unpacked
 
