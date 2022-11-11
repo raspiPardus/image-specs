@@ -80,6 +80,7 @@ steps:
     - __LINUX_IMAGE__
     - __RASPI_FIRMWARE__
     - __WIRELESS_FIRMWARE__
+    - __BLUETOOTH_FIRMWARE__
     tag: tag-root
     unless: rootfs_unpacked
 

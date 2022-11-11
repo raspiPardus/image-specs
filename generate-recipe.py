@@ -61,11 +61,17 @@ else:
     firmware_component = 'non-free'
     firmware_component_old = ''
 
-# Extra wireless firmware:
+# wireless firmware:
 if version != '2':
     wireless_firmware = 'firmware-brcm80211'
 else:
     wireless_firmware = ''
+
+# bluetooth firmware:
+if version != '2':
+    bluetooth_firmware = 'bluez-firmware'
+else:
+    bluetooth_firmware = ''
 
 # Pi 4 on buster requires some backports:
 backports_enable = False
@@ -179,6 +185,7 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__SYSTEMD_TIMESYNCD__', systemd_timesyncd) \
             .replace('__RASPI_FIRMWARE__', raspi_firmware) \
             .replace('__WIRELESS_FIRMWARE__', wireless_firmware) \
+            .replace('__BLUETOOTH_FIRMWARE__', bluetooth_firmware) \
             .replace('__SERIAL_CONSOLE__', serial) \
             .replace('__HOST__', hostname) \
             .replace('__TOUCH_MACHINE_ID__', touch_machine_id) \
