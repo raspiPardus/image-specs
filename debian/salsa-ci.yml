@@ -26,7 +26,7 @@ shellcheck:
   script:
     - apt-get update && apt-get upgrade -y
     - apt-get install -y shellcheck
-    - shellcheck -e SC1090,SC1091,SC2086,SC2154 -s dash $(find rootfs/etc/initramfs-tools -type f -executable  | xargs grep -l '^#!/bin/sh')
+    - shellcheck -e SC1090,SC1091,SC2086 -s dash $(find rootfs/etc/initramfs-tools -type f -executable  | xargs grep -l '^#!/bin/sh')
 
 build yamls:
   stage: build

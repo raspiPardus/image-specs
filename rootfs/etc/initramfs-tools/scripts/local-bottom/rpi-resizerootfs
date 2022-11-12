@@ -33,8 +33,8 @@ fi
 
 log_begin_msg "$0 resizing $ROOT"
 
-# Unmount for safety
-umount "${rootmnt}"
+# Unmount for safety; fail if unset or empty (shellcheck SC2154)
+umount "${rootmnt:?}"
 
 # Expand the partition size to fill the entire device
 parted -s $rootdev resizepart $rootpart_nr 100%
