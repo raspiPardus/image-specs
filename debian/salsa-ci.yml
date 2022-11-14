@@ -34,7 +34,7 @@ build yamls:
   dependencies: []
   script:
     - apt-get update && apt-get upgrade -y
-    - eatmydata apt-get install -y vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools python3 fakemachine make
+    - apt-get install -y python3 make git
     - make yaml
     - mkdir build
     - cp raspi*.yaml build/
