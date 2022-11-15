@@ -46,7 +46,10 @@ partprobe "$rootdev"
 resize2fs "$rootpart"
 
 # Remount root
-if ! mount -r ${FSTYPE:+-t "${FSTYPE}"} "${ROOTFLAGS}" "${ROOT}" "${rootmnt?}"; then
+# Don't quote ${ROOTFLAGS} as that results in an extra (empty) argument
+# to 'mount', which in turn causes a boot failure
+# shellcheck disable=SC2086
+if ! mount -r ${FSTYPE:+-t "${FSTYPE}"} ${ROOTFLAGS} "${ROOT}" "${rootmnt?}"; then
     panic "Failed to mount ${ROOT} as root file system."
 fi
 
